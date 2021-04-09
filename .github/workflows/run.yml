@@ -1,40 +1,32 @@
-name: run
+name: 签到
 
 on:
   push:
-    branches: main
-  gollum:
-  workflow_dispatch:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
   schedule:
-    - cron: '10 00 * * *'
+    - cron: 0 22,14 * * *
+  watch:
+    types: started
 
 jobs:
-  deploy:
-
+  build:
     runs-on: ubuntu-latest
+    if: github.event.repository.owner.id == github.event.sender.id
 
     steps:
     - uses: actions/checkout@v2
-    - name: Set up Python
+    - name: 初始化Python
       uses: actions/setup-python@v2
       with:
-        python-version: '3.x'
-    - uses: actions/cache@v2
-      with:
-        path: ~/.cache/pip
-        key: ${{ runner.os }}-pip-${{ hashFiles('**/run_in_Actions/requirements.txt') }}
-        restore-keys: |
-          ${{ runner.os }}-pip-
-    - name: Set time zone
-      run: sudo timedatectl set-timezone 'Asia/Shanghai'
-    - name: Install dependencies
-      run: |
-        pip install -r requirements.txt
-    - name: Build and publish
+        python-version: 3.7
+    - name: 签到
       env:
         USERID: ${{ secrets.USERID }}
         PASSWORD: ${{ secrets.PASSWORD }}
         SEND: ${{ secrets.SEND }}
         DATA: ${{ secrets.DATA }}
       run: |
+        pip install -r requirements.txt
         python main.py
