@@ -1,4 +1,4 @@
-name: 签到
+name: main
 
 on:
   push:
