@@ -121,9 +121,3 @@ SEND | push推送的token（选填）
 
 本项目仅用于学习。
 
-# 参考项目
-
-[srcrs/UnicomTask](https://github.com/srcrs/UnicomTask)，参考了该项目的README.md文档
-
-
-
